@@ -1,22 +1,14 @@
-import java.util.Scanner;
-
 public class MenuUtil {
 
-    public static void displayMenu(String[] menuOptions, String menuTitle) {
-        System.out.println(menuTitle);
-        System.out.println("Please choose from one of the following options:");
-        for (String option : menuOptions) {
+    public static void displayMenu(String[] options, String title) {
+        System.out.println("_____________________________");
+        System.out.println(title);
+        System.out.println("_____________________________");
+
+        for (String option : options) {
             System.out.println(option);
         }
-    }
 
-    public static int getMenuChoice(int numItems) {
-        Scanner keyboard = new Scanner(System.in);
-        int choice = keyboard.nextInt();
-        while (choice < 0 || choice >= numItems) {
-            System.out.printf("Please enter a valid option\n", numItems - 1);
-            choice = keyboard.nextInt();
-        }
-        return choice;
+        System.out.println();
     }
 }

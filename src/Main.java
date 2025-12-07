@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+
+
 public class Main {
 
     public static void main(String[] args) {
@@ -7,44 +9,56 @@ public class Main {
         Scanner keyboard = new Scanner(System.in);
 
         String[] menuOptions = {
-                "0. Exit",
+                "0. Quit",
                 "1. Encrypt a file",
-                "2. Decrypt a file",
+                "2. Decrypt a file"
         };
 
-        int menuChoice = -1;
+        int choice = -1;
 
         do {
-            MenuUtil.displayMenu(menuOptions, "AES encryption menu");
-            try {
-                menuChoice = MenuUtil.getMenuChoice(menuOptions.length);
+            MenuUtil.displayMenu(menuOptions, "AES Encryption Application");
 
-                switch (menuChoice) {
+            choice = InputValidator.getValidatedMenuChoice(keyboard, 0, 2);
 
-                    case 1:
-                        System.out.println("Enter the filename to encrypt:");
-                        String fileToEncrypt = keyboard.next();
-                        AESUtil.encryptFile(fileToEncrypt);
-                        break;
+            switch (choice) {
+                case 1:
+                    System.out.println("Encrypt file selected.");
 
-                    case 2:
-                        System.out.println("Enter the filename to decrypt:");
-                        String fileToDecrypt = keyboard.next();
-                        System.out.println("Enter AES key:");
-                        String key = keyboard.next();
-                        AESUtil.decryptFile(fileToDecrypt, key);
-                        break;
+                    // Ask user for filename
+                    String fileToEncrypt = InputValidator.getValidatedFilename(keyboard);
+
+                    // Generate random AES key
+                    AESKey encryptKey = KeyUtil.generateRandomKey();
+
+                    // Encrypt the file
+                    AESUtil.encryptFile(fileToEncrypt, encryptKey);
+
+                case 2:
+                    System.out.println("Decrypt file selected.");
+
+                    // Ask user for filename (ciphertext file)
+                    String fileToDecrypt = InputValidator.getValidatedFilename(keyboard);
+
+                    // Ask user for AES key in Base64
+                    System.out.println("Enter AES key (Base64):");
+                    String base64Key = keyboard.next();
+
+                    // Convert Base64 string → byte[]
+                    byte[] decodedKey = java.util.Base64.getDecoder().decode(base64Key);
+
+                    // Create AESKey object
+                    AESKey decryptKey = new AESKey(decodedKey);
+
+                    // Decrypt the file
+                    AESUtil.decryptFile(fileToDecrypt, decryptKey);
 
                     default:
-                        break;
-                }
-
-            } catch (Exception ex) {
-                System.out.println("Invalid option. Please try again.");
+                    break;
             }
 
-        } while (menuChoice != 0);
+        } while (choice != 0);
 
-        System.out.println("Bye!");
+        System.out.println("Exiting...");
     }
 }
