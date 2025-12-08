@@ -24,14 +24,14 @@ public class AESUtil {
 
             System.out.println("File encrypted successfully.");
             System.out.println("Key (Base64): " + Base64.getEncoder().encodeToString(key.getKeyBytes()));
-
+            System.out.println("Please save this key. You will need it to decrypt the file.");
         } catch (Exception e) {
             System.out.println("Encryption error: " + e.getMessage());
         }
     }
 
 
-    public static void decryptFile(String filename, AESKey key) {
+    public static String decryptFile(String filename, AESKey key) {
 
         System.out.println("Decrypting file: " + filename);
 
@@ -46,12 +46,17 @@ public class AESUtil {
 
             byte[] decryptedBytes = cipher.doFinal(cipherBytes);
 
-            FileUtil.writeTextToFile("plaintext.txt", new String(decryptedBytes));
+            String plainText = new String(decryptedBytes);
+
+            FileUtil.writeTextToFile("plaintext.txt", plainText);
 
             System.out.println("File decrypted successfully.");
 
+            return plainText;
+
         } catch (Exception e) {
             System.out.println("Decryption error: " + e.getMessage());
+            return null;
         }
     }
 }

@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class FileUtil {
 
     public static String readTextFromFile(String filename) throws Exception {
-        File f = new File("src/" + filename);
+        File f = new File(filename);
 
         Scanner s = new Scanner(f);
         s.useDelimiter("\\Z"); // read whole file
